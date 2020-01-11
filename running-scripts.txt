@@ -1,0 +1,5 @@
+kashef store:
+D:\projects\kashef\KashefModuleStore\venv2\Scripts\python.exe app.py
+
+webservices:
+D:\projects\kashef\KashefDummyWSs\venv\Scripts\python.exe D:/projects/kashef/KashefDummyWSs/app.py

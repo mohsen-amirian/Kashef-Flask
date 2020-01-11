@@ -1,0 +1,345 @@
+{% extends "layouts/_base_layout_developer.html" %}
+{% block content %}
+
+
+<div  class="container" style="direction:rtl; padding-top:50px; padding-bottom:80px;">
+	<div class="panel panel-default" style="padding-bottom:20px;">
+	  <div class="panel-body">
+
+		<div class="jumbotron">
+			<h3 style="text-align: center;">اطلاعات ماژول خود را با دقت در فرم زیر وارد کنید</h3>
+		</div>
+
+		{% if duplicate_name %}
+          <p style="color:red">
+			  نام دیگری برای ماژول خود انتخاب کنید، این نام قبلا استفاده شده است.
+		  </p>
+        {% endif %}
+
+		{% if duplicate_codename %}
+        <p style="color:red">
+			  نام دیگری برای پکیج خود انتخاب کنید، این نام قبلا استفاده شده است.
+		</p>
+        {% endif %}
+
+		{% if icon_file_error %}
+        <p style="color:red">
+			  اشکال در فایل آیکون انتخاب شده، لطفاً فایل دیگری انتخاب کنید.
+		</p>
+        {% endif %}
+
+		<form action="/render-module-register-form/" method="POST" enctype = "multipart/form-data">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label" for="name">نام ماژول:</label>
+						<input type="text" class="form-control" name="name" id="name" placeholder="نام ماژول" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="code_name">نام ماژول به انگلیسی:</label>
+						<input style="dir:'ltr'" type="text" dir="ltr" class="form-control" name="code_name" id="code_name" placeholder="Module Name (En)" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="ws_url">آدرس وب سرویس:</label>
+						<input type="url" class="form-control" dir="ltr" id="ws_url" name="ws_url" placeholder="Web Service Url" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="icon_file">انتخاب فایل آیکون:</label>
+						<input class="form-control" dir="ltr" type = "file" accept=".svg" name = "icon_file" id="icon_file" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="img_file">انتخاب فایل تصویر:</label>
+						<input class="form-control" dir="ltr" type = "file" accept=".jpg,.png,.jpeg" name = "img_file" id="img_file" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="category">دسته (Category):</label>
+						<select class="form-control" name="category" id="category">
+							{%  for category in categories %}
+								<option>{{ category.name }}</option>
+							{% endfor %}
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="ws_type">نوع وب سرویس:</label>
+						<select class="form-control" dir="ltr" name="ws_type" id="ws_type">
+							<option>json</option>
+							<option>form-data</option>
+						</select>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+
+					<div class="form-group">
+						<label class="control-label" for="description">توضیحات:</label>
+						<!--<textarea class="form-control" rows="9" id="description" name="description" required></textarea>-->
+						<div id="editor">
+							<textarea class="form-control" rows="9" style="margin-top: 30px;" placeholder="توضیحات" id='description' name="description"></textarea>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<!-- INPUTS -->
+
+			<div class="panel panel-success">
+				<div class="panel-heading" style="text-align:center;"><h4>ورودی ها</h4></div>
+				<div id="wrapper_in" class="panel-body" style="background-color: #fbfbfb;">
+					<label id="btn_add_in" style="cursor: pointer; margin-bottom: 15px;"><i class="fas fa-plus"></i><span style="margin: 0 8px 0 20px;">افزودن </span> </label>
+					<div class="row" style="margin-bottom: 5px;">
+						<div class="col-sm-3">
+							<input type="text" dir="rtl" class="form-control control-1" name="name_in1" placeholder="نام ورودی">
+						</div>
+						<div class="col-sm-3">
+							<input type="text" dir="ltr" class="form-control control-3" name="script_name_in1" placeholder="Input Name (En)">
+						</div>
+						<div class="col-sm-3">
+							<div class="form-group">
+								<select class="form-control control-2" dir="auto" name="type_in1">
+									{%  for data_type in data_types %}
+										<option>{{ data_type.name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<label  class="remove" style="cursor: pointer;"><i class="fas fa-trash-alt"></i> </label>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+			<!-- INPUTS PARAMETER
+
+
+			<div class="panel panel-primary">
+				<div class="panel-heading" style="text-align:center;"><h4>پارامتر ها (دریافتی از کاربر)</h4></div>
+				<div id="wrapper_in_param" class="panel-body" style="background-color: #fbfbfb;">
+
+					<label id="btn_add_in_param" style="cursor: pointer; margin-bottom: 15px;"><i class="fas fa-plus"></i><span style="margin: 0 8px 0 20px;">افزودن </span> </label>
+					<div class="row" style="margin-bottom: 5px;">
+						<div class="col-sm-3">
+							<input type="text" class="form-control control-1" name="name_in_param1" placeholder="نام پارامتر">
+						</div>
+
+						<div class="col-sm-3">
+							<input type="text" class="form-control control-3" name="script_name_in_param1" placeholder="نام اسکریپتی (به انگلیسی)">
+						</div>
+
+						<div class="col-sm-3">
+							<input type="text" class="form-control control-4" name="description_in_param1" placeholder="توضیح">
+						</div>
+
+						<div class="col-sm-2">
+							<div class="form-group">
+								<select class="form-control control-2" name="type_in_param1">
+									{%  for data_type in data_types %}
+										<option>{{ data_type.name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+
+						<div class="col-sm-1">
+							<label  class="remove" style="cursor: pointer;"><i class="fas fa-trash-alt"></i> </label>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+			-->		
+			
+			
+			<!-- OUTPUTS -->
+
+			<div class="panel panel-danger">
+				<div class="panel-heading" style="text-align:center;"><h4>خروجی ها</h4></div>
+				<div id="wrapper_out" class="panel-body" style="background-color: #fbfbfb;">
+
+					<label id="btn_add_out" style="cursor: pointer; margin-bottom: 15px;"><i class="fas fa-plus"></i><span style="margin: 0 8px 0 20px;">افزودن </span> </label>
+
+					<div class="row" style="margin-bottom: 5px;">
+						<div class="col-sm-3">
+							<input type="text" class="form-control control-1" dir="rtl" name="name_out1" placeholder="نام خروجی">
+						</div>
+						<div class="col-sm-3">
+							<input type="text" class="form-control control-3" dir="ltr" name="script_name_out1" placeholder="Output Name (En)">
+						</div>
+						<div class="col-sm-3">
+
+							<div class="form-group">
+								<select class="form-control control-2" name="type_out1" dir="auto">
+									{%  for data_type in data_types %}
+										<option>{{ data_type.name }}</option>
+									{% endfor %}
+								</select>
+							</div>
+						</div>
+
+						<div class="col-sm-3">
+							<label  class="remove" style="cursor: pointer;"><i class="fas fa-trash-alt"></i> </label>
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+
+			<div style="text-align: center;">
+				<button type="submit" class="btn_add_inbtn btn-success btn-lg">ثبت ماژول</button>
+				<input type="reset" class="btn btn-danger btn-lg" value="پاک کردن فرم">
+			</div>
+		</form>
+	</div>
+	</div>
+</div>
+
+<style>
+	.fa-trash-alt{
+		font-size: 1.6em;
+		color: red;
+		border-radius: 50%;
+		padding: 26%;
+	}
+	.fa-plus{
+		background-color: green;
+		padding: 10%;
+		color: white;
+		border-radius: 50%;
+		font-size: 1.2em;
+	}
+	#btn_add_out, #btn_add_in, #btn_add_in_param
+	{
+		padding: 5px 5px 5px 10px;
+		background-color: #bcedbc;
+		border-radius: 50px;
+        width: 9em;
+	}
+
+</style>
+
+
+<script
+	src="../../static/jquery/jquery-2.2.4.js"
+	integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+	crossorigin="anonymous">
+</script>
+
+<script>
+$( document ).ready(function() {
+	var index_in = 1;
+
+    $("#btn_add_in").click(function(){
+        index_in++;
+        var clone_element_in = $("#wrapper_in .row").first().clone();
+
+        clone_element_in.find(".control-1").attr('name', "name_in"+index_in);
+        clone_element_in.find(".control-1").val("");
+
+        clone_element_in.find(".control-2").attr('name', "type_in"+index_in);
+
+		clone_element_in.find(".control-3").attr('name', "script_name_in"+index_in);
+		clone_element_in.find(".control-3").val("");
+
+        clone_element_in.appendTo("#wrapper_in");
+	});
+
+    $("body").on('click', '#wrapper_in .remove',function(){
+    	if($('#wrapper_in').children('.row').length >1)
+        $(this).closest(".row").remove();
+    });
+
+
+    var index_in_param = 1;
+
+    $("#btn_add_in_param").click(function(){
+        index_in_param++;
+        var clone_element_in_param = $("#wrapper_in_param .row").first().clone();
+
+        clone_element_in_param.find(".control-1").attr('name', "name_in_param"+index_in_param);
+        clone_element_in_param.find(".control-1").val("");
+
+        clone_element_in_param.find(".control-2").attr('name', "type_in_param"+index_in_param);
+
+		clone_element_in_param.find(".control-3").attr('name', "script_name_in_param"+index_in_param);
+		clone_element_in_param.find(".control-3").val("");
+
+		clone_element_in_param.find(".control-4").attr('name', "description_in_param"+index_in_param);
+		clone_element_in_param.find(".control-4").val("");
+
+        clone_element_in_param.appendTo("#wrapper_in_param");
+	});
+
+    $("body").on('click', '#wrapper_in_param .remove',function(){
+    	if($('#wrapper_in_param').children('.row').length >1)
+        $(this).closest(".row").remove();
+    });
+
+
+
+    var index_out = 1;
+
+    $("#btn_add_out").click(function(){
+        index_out++;
+        var clone_element_out = $("#wrapper_out .row").first().clone();
+
+        clone_element_out.find(".control-1").attr('name', "name_out"+index_out);
+        clone_element_out.find(".control-1").val("");
+
+        clone_element_out.find(".control-2").attr('name', "type_out"+index_out);
+
+		clone_element_out.find(".control-3").attr('name', "script_name_out"+index_out);
+		clone_element_out.find(".control-3").val("");
+
+		clone_element_out.appendTo("#wrapper_out");
+	});
+
+    $("body").on('click', '#wrapper_out .remove',function(){
+    	if($('#wrapper_out').children('.row').length >1)
+        $(this).closest(".row").remove();
+    });
+
+
+});
+
+</script>
+
+<!--scripts for froala editor-->
+
+<script type="text/javascript" src="\static\froala\jquery.min.js"></script>
+<script type="text/javascript" src="\static\froala\codemirror.min.js"></script>
+<script type="text/javascript" src="\static\froala\xml.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\froala_editor.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\align.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\code_beautifier.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\code_view.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\draggable.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\image.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\image_manager.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\link.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\lists.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\paragraph_format.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\paragraph_style.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\table.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\video.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\url.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\entities.min.js"></script>
+
+<script>
+    $(function(){
+      $('#description')
+        .froalaEditor({enter: $.FroalaEditor.ENTER_P, placeholderText: null})
+    });
+</script>
+
+{% endblock %}

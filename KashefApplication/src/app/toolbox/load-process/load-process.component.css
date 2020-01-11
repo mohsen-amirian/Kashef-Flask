@@ -1,0 +1,9 @@
+.process-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.process-item {
+  margin: 0.5em 0;
+  cursor: pointer;
+}

@@ -1,0 +1,34 @@
+#toolbox {
+  height: 100%;
+}
+
+#toolbox_title {
+  text-align: center;
+
+}
+
+.tool:focus {
+  background-color: lightgreen !important;
+}
+
+div .tool {
+  /*text-align: center;*/
+  background-size: 60% !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+  height: 5em;
+  cursor: pointer;
+}
+
+.panel-heading {
+  text-align: center;
+}
+
+.col-lg-4 {
+  text-align: center;
+}
+
+.toolbox-container {
+  display: flex;
+  flex-wrap: wrap;
+}

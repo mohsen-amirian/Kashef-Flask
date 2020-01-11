@@ -1,0 +1,9 @@
+setup.py
+kashef_module8888/__init__.py
+kashef_module8888/kashef_module8888.py
+kashef_module8888.egg-info/PKG-INFO
+kashef_module8888.egg-info/SOURCES.txt
+kashef_module8888.egg-info/dependency_links.txt
+kashef_module8888.egg-info/entry_points.txt
+kashef_module8888.egg-info/top_level.txt
+kashef_module8888/icons/2222.svg

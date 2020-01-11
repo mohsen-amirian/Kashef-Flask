@@ -1,0 +1,60 @@
+{% if role == 'Admin' %}
+    {% extends "layouts/_base_layout_admin.html" %}
+{% elif role == 'ModuleDeveloper' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% elif role == 'not_approved_dev' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% else %}
+    {% extends "layouts/_base_layout.html" %}
+{% endif %}
+
+
+{% block content %}
+<div class="container" style="margin-top:70px">
+
+  {% if role == 'not_approved_dev' %}
+        <h3><span class="label label-warning">حساب کاربری شما در انتظار تایید مدیریت است.</span></h3>
+  {% endif %}
+
+  <h2 style="text-align:center; margin-top:-20px;">لیست ماژول های فروشگاه</h2>
+
+      {%  for category in categories %}
+          <h3 style="margin-top: 2em;">ماژول های گروه {{category.name}}</h3>
+          <div class="container" style="border-style: solid; border-width: 0.1em;">
+          <div class="row">
+          {% set module_counter = namespace(a=0) %}
+          {%  for module in modules %}
+              {% if module.category_id == category.id %}
+                  {% if module_counter.a is divisibleby(3) and module_counter.a > 0 %}
+                      </div>
+                      <div class="row">
+                  {% endif %}
+                  <div class="col-sm-4">
+                      <div class="panel panel-success">
+                        <div class="panel-heading">{{ module.name }}</div>
+                        {% if module.image_address == '' %}
+                          <div class="panel-body"><img src="/static/module_images/sample_module3.jpg" class="img-responsive" style="width:100%; height: 20em"></div>
+                        {% else %}
+                          <div class="panel-body"><img src={{ module.image_address }} class="img-responsive" style="width:100%; height: 20em"></div>
+                        {% endif %}
+                        <div class="panel-footer">
+                          <button type="button" class="btn btn-danger" onclick="window.location.href='/module-info/{{ module.id }}'">مشاهده و دریافت ماژول</button>
+                        </div>
+                      </div>
+                  </div>
+                  {% set module_counter.a = module_counter.a + 1 %}
+              {% endif %}
+          {% endfor %}
+          {% if module_counter.a == 0 %}
+              <div style="padding: 1em;">هیچ ماژولی در این گروه ثبت نشده است.</div>
+          {% endif %}
+        </div>
+        </div>
+      {% endfor %}
+
+
+</div>
+{% endblock %}
+
+
+

@@ -1,0 +1,26 @@
+<div *ngIf="showToolbox" class="panel-group" id="accordion">
+  <div class="panel panel-default" *ngFor="let category of categories; let i=index;">
+    <div class="panel-heading">
+      <h4 class="panel-title">
+        <a data-toggle="collapse" href="#collapse{{i}}">{{category.name}}</a>
+      </h4>
+    </div>
+    <div id="collapse{{i}}" [ngClass]="{'in': i === 0}" class="panel-collapse collapse">
+      <div class="panel-body">
+        <div class="row toolbox-container">
+          <ng-container *ngFor="let module of tools">
+            <div *ngIf="module.category_id === category.id" class="col-lg-4 tool-container">
+              <div class="tool"
+                   [style.background]="'url(' + module.imageAddress + ')'"
+                   (dblclick)="moduleClicked(module)">
+              </div>
+              <div>{{module.name}}</div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-load-process></app-load-process>

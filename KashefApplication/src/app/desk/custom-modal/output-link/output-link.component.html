@@ -1,0 +1,29 @@
+<div class="row">
+  <div class="col-sm-3">
+    <label class="control-label">نام خروجی</label>
+    <input class="form-control" type="text" value="{{selectedOutput.name}}" readonly>
+  </div>
+
+  <div class="col-sm-3">
+    <label class="control-label">نوع</label>
+    <input class="form-control" type="text" value="{{selectedOutputTypeName}}" readonly>
+  </div>
+
+  <div class="col-sm-3">
+    <label class="control-label" for="module-name">ماژول متصل</label>
+    <app-custom-dropdown *ngIf="moduleDropDownSelectedValue !== ''"
+                         id="module-name"
+                         [dropdownItems]="otherModulesDropdownItems"
+                         [(value)]="moduleDropDownSelectedValue"
+                         (itemChange)="otherModulesDropdownChanged($event)">
+    </app-custom-dropdown>
+  </div>
+  <div class="col-sm-3">
+    <label class="control-label" for="input-name">نام ورودی:</label>
+    <app-custom-dropdown *ngIf="inputDropDownSelectedValue !== ''"
+                         id="input-name"
+                         [dropdownItems]="inputDropdownItems"
+                         [(value)]="inputDropDownSelectedValue">
+    </app-custom-dropdown>
+  </div>
+</div>

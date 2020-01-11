@@ -1,0 +1,44 @@
+{% extends "layouts/_base_layout_admin.html" %}
+{% block content %}
+
+<div class="container">
+  <h2 style="text-align:center; margin-top:50px;">{%trans%}مدیریت فروشگاه{%endtrans%}</h2>
+  <br><br>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <a href="/user-manager">
+          <img src="/static/images/users.png" alt="Lights" style="width:100%">
+          <div class="caption">
+            <p>مدیریت کاربران</p>
+            <p>تعداد کاربران در انتظار تایید: {{ number_of_not_approved_users }}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <a href="/module-manager">
+          <img src="/static/images/module.png" alt="Nature" style="width:100%">
+          <div class="caption">
+            <p>مدیریت ماژول ها</p>
+            <p>تعداد ماژول های در انتظار تایید: {{ number_of_not_approved_modules }}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <a href="/process-manager">
+          <img src="/static/images/process.png" alt="Fjords" style="width:100%">
+          <div class="caption">
+            <p>مدیریت فرآیندها</p>
+            <p>تعداد فرآیند های در انتظار تایید: {{ number_of_not_approved_processes }}</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,44 @@
+{% if role == 'Admin' %}
+    {% extends "layouts/_base_layout_admin.html" %}
+{% elif role == 'ModuleDeveloper' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% elif role == 'not_approved_dev' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% else %}
+    {% extends "layouts/_base_layout.html" %}
+{% endif %}
+
+{% block content %}
+<div class="container" style="margin-top:70px">
+  <h2 style="text-align:center; margin-top:-20px;">لیست فرآیندهای فروشگاه</h2>
+      {% set process_counter = namespace(a=0) %}
+      {% set end_row_flag = namespace(a=0) %}
+      {%  for process in processes %}
+        {% if process_counter.a is divisibleby(3) %}
+          {% if end_row_flag.a > 0 %}
+            </div>
+            </div>
+          {% endif %}
+          {% set end_row_flag.a = 1 %}
+          <div class="container" style="margin-top:70px">
+          <div class="row">
+        {% endif %}
+        <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">{{ process.name }}</div>
+              <div class="panel-body"><img src="/static/process_images/sample_process.jpg" class="img-responsive" style="width:100%"></div>
+              <div class="panel-footer">
+                <button type="button" class="btn btn-danger" onclick="window.location.href='/process-info/{{ process.id }}'">مشاهده و خرید فرآیند</button>
+              </div>
+            </div>
+        </div>
+        {% set process_counter.a = process_counter.a + 1 %}
+      {% endfor %}
+
+
+    </div><br>
+
+</div>
+
+{% endblock %}
+

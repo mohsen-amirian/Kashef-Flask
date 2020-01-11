@@ -1,0 +1,24 @@
+<div>
+  <hr>
+  <h3>ذخیره فرآیند</h3>
+  <div class="row">
+    <div class="col-sm-6">
+      <label class="control-label">نام:</label>
+      <input class="form-control" type="text" dir="auto" [(ngModel)]="processName" autocomplete="off">
+    </div>
+    <div class="col-sm-6">
+      <label class="control-label">توضیحات:</label>
+      <textarea class="form-control" rows="5" dir="auto" [(ngModel)]="processDescription"></textarea>
+    </div>
+  </div>
+  <div>
+    <button (click)="saveProcess()" type="button" class="btn btn-info" >ذخیره</button>
+  </div>
+
+  <div class="register-message">
+    <span *ngIf="saveCompleted" class="label label-success">فرآیند با موفقیت ذخیره شد.</span>
+    <span *ngIf="saveFailed" class="label label-danger">برای ذخیره فرآیند می بایست حداقل یک ماژول انتخاب شده باشد.</span>
+  </div>
+
+</div>
+

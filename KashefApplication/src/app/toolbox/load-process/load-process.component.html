@@ -1,0 +1,8 @@
+<div *ngIf="showProcessLoader" class="panel panel-info process-container">
+  <div class="panel-heading">بارگذاری فرآیندها</div>
+  <div class="panel-body">
+    <div *ngFor="let process of userProcesses" class="list-group-item process-item" (click)="onProcessClicked(process)">
+      {{process.name}}
+    </div>
+  </div>
+</div>

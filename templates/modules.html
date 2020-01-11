@@ -1,0 +1,46 @@
+{% if role == 'Admin' %}
+    {% extends "layouts/_base_layout_admin.html" %}
+{% elif role == 'ModuleDeveloper' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% elif role == 'not_approved_dev' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% else %}
+    {% extends "layouts/_base_layout.html" %}
+{% endif %}
+
+{% block content %}
+<div class="container" style="margin-top:70px">
+  <h2>لیست ماژول های فروشگاه</h2>
+      {% set module_counter = namespace(a=0) %}
+      {% set end_row_flag = namespace(a=0) %}
+      {%  for module in modules %}
+        {% if module_counter.a is divisibleby(3) %}
+          {% if end_row_flag.a > 0 %}
+            </div>
+            </div>
+          {% endif %}
+          {% set end_row_flag.a = 1 %}
+          <div class="container" style="margin-top:70px">
+          <div class="row">
+        {% endif %}
+        <div class="col-sm-4">
+            <div class="panel panel-success">
+              <div class="panel-heading">{{ module.name }}</div>
+              {% if module.image_address == '' %}
+                <div class="panel-body"><img src="/static/module_images/sample_module3.jpg" class="img-responsive" style="width:100%"></div>
+              {% else %}
+                <div class="panel-body"><img src={{ module.image_address }} class="img-responsive" style="width:100%"></div>
+              {% endif %}
+              <div class="panel-footer">
+                <button type="button" class="btn btn-danger" onclick="window.location.href='/module-info/{{ module.id }}'">مشاهده و دریافت ماژول</button>
+              </div>
+            </div>
+        </div>
+        {% set module_counter.a = module_counter.a + 1 %}
+      {% endfor %}
+
+
+    </div><br>
+
+</div>
+{% endblock %}

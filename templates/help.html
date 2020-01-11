@@ -1,0 +1,15 @@
+{% if role == 'Admin' %}
+    {% extends "layouts/_base_layout_admin.html" %}
+{% elif role == 'ModuleDeveloper' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% elif role == 'not_approved_dev' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% else %}
+    {% extends "layouts/_base_layout.html" %}
+{% endif %}
+
+{% block content %}
+
+
+
+{% endblock %}

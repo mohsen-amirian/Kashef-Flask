@@ -1,0 +1,64 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal">&times;</button>
+  <h4 class="modal-title">ماژول دریافت ورودی</h4>
+</div>
+<div class="modal-body">
+  <div class="panel-group">
+    <div class="panel panel-danger">
+      <div class="panel-heading">مشخصات</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="control-label">نام خروجی</label>
+            <input class="form-control" type="text" value="{{moduleOutput.name}}" readonly>
+          </div>
+
+          <div class="col-sm-6">
+            <label class="control-label">نوع</label>
+            <input class="form-control" type="text" value="{{moduleOutputTypeName}}" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="control-label" for="module-name">ماژول متصل</label>
+            <app-custom-dropdown *ngIf="moduleDropDownSelectedValue !== ''"
+                                 id="module-name"
+                                 [dropdownItems]="otherModulesDropdownItems"
+                                 [(value)]="moduleDropDownSelectedValue"
+                                 (itemChange)="otherModulesDropdownChanged($event)">
+            </app-custom-dropdown>
+          </div>
+
+          <div class="col-sm-6">
+            <label class="control-label" for="input-name">نام ورودی:</label>
+            <app-custom-dropdown *ngIf="inputDropDownSelectedValue !== ''"
+                                 id="input-name"
+                                 [dropdownItems]="inputDropdownItems"
+                                 [(value)]="inputDropDownSelectedValue"
+                                 (itemChange)="inputDropDownChanged($event)">
+            </app-custom-dropdown>
+          </div>
+        </div>
+
+        <div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label class="control-label">مقدار:</label>
+              <ng-container *ngIf="linkedInputType !== 4">
+                <input class="form-control" type="text" dir="auto" [(ngModel)]="linkedInputValue" autocomplete="off">
+              </ng-container>
+              <ng-container *ngIf="linkedInputType === 4">
+                <div class="form-group">
+                  <label class="control-label" >انتخاب فایل</label>
+                  <input type="file" id="input-file">
+                </div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+

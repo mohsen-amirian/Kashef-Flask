@@ -1,0 +1,56 @@
+{% if role == 'Admin' %}
+    {% extends "layouts/_base_layout_admin.html" %}
+{% elif role == 'ModuleDeveloper' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% elif role == 'not_approved_dev' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% else %}
+    {% extends "layouts/_base_layout.html" %}
+{% endif %}
+
+{% block content %}
+
+    <div class="container">
+        <div class="row content">
+            <h4>
+                <small>اطلاعات فرآیند</small>
+            </h4>
+            <hr>
+            <h2>{{ process.name }}</h2>
+            {% if process.is_approved %}
+                <h5><span class="label label-success">تایید شده</span></h5>
+            {% else %}
+                <h5><span class="label label-danger">تایید نشده</span></h5>
+            {% endif %}
+        </div>
+        <div class="row content" style="margin-top:40px">
+            <div class="col-sm-9">
+                <div>{{ process.description|safe }}</div>
+            </div>
+
+            <div class="col-sm-3">
+                <!--<div class="panel panel-success">-->
+                <div class="panel-body">
+                    <img class="img-responsive" src="/static/process_images/sample_process.jpg" style="width:100%">
+
+                    <br><br>
+                    {% if is_admin_or_process_owner %}
+                        {#he is module owner or admin#}
+                    {% elif current_user.is_authenticated %}
+                        {% if bought_module %}
+                            <span class="label label-default">شما این فرآیند را خریداری کرده اید</span>
+                        {% else %}
+                            <button type="button" class="btn btn-success"
+                                    onclick="window.location.href='/buy-process/{{ process.id }}'" style="width:100%">خرید فرآیند
+                            </button>
+                        {% endif %}
+                    {% else %}
+                        <span class="label label-default">برای خرید فرآیند می بایست در سایت ثبت نام کنید</span>
+                    {% endif %}
+                </div>
+                <!--</div>-->
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

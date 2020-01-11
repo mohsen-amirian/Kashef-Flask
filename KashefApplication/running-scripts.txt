@@ -1,0 +1,11 @@
+kashef store:
+D:\projects\kashef\KashefModuleStore\venv2\Scripts\python.exe app.py
+
+webservices:
+D:\projects\kashef\KashefDummyWSs\venv\Scripts\python.exe D:/projects/kashef/KashefDummyWSs/app.py
+
+captcha module:
+D:\projects\kashef\OtherModules\captcha\venv2\Scripts\python.exe main.py
+
+pentest:
+D:\projects\kashef\OtherModules\pentest\venv\Scripts\python.exe pentest_web.py

@@ -1,0 +1,358 @@
+{% extends "layouts/_base_layout_developer.html" %}
+{% block content %}
+
+
+<div  class="container" style="direction:rtl; padding-top:50px; padding-bottom:80px;">
+	<div class="panel panel-default" style="padding-bottom:20px;">
+	  <div class="panel-body">
+
+		<div class="jumbotron">
+			<h3 style="text-align: center;">اطلاعات ماژول خود را با دقت در فرم زیر وارد کنید</h3>
+		</div>
+
+		{% if duplicate_name %}
+          <p style="color:red">
+			  نام دیگری برای ماژول خود انتخاب کنید، این نام قبلا استفاده شده است.
+		  </p>
+        {% endif %}
+
+		{% if duplicate_codename %}
+        <p style="color:red">
+			  نام دیگری برای پکیج خود انتخاب کنید، این نام قبلا استفاده شده است.
+		</p>
+        {% endif %}
+
+        {% if icon_file_error %}
+        <p style="color:red">
+			  اشکال در فایل آیکون، دوباره امتحان کنید.
+		</p>
+        {% endif %}
+
+		{% if img_file_error %}
+        <p style="color:red">
+			  اشکال در فایل تصویر، دوباره امتحان کنید.
+		</p>
+        {% endif %}
+
+		<form action="/render-module-edit-form/" method="POST" enctype = "multipart/form-data">
+            <input type="hidden" name="module_id" value="{{ module.id }}">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label" for="name">نام ماژول:</label>
+						<input type="text" class="form-control" name="name" id="name" value="{{ module.name }}" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="name">نام پکیج (به انگلیسی):</label>
+						<input type="text" dir="ltr" class="form-control" name="code_name" id="code_name" value="{{ module.code_name }}" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="URL">آدرس وب سرویس:</label>
+						<input type="url" dir="ltr" class="form-control" id="URL" name="ws_url" value="{{ module.web_service_url }}" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="icon_file">انتخاب فایل آیکون:</label>
+						<input class="form-control" dir="ltr" type = "file" accept=".svg" name = "icon_file" id="icon_file">
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="img_file">انتخاب فایل تصویر:</label>
+						<input class="form-control" dir="ltr" type = "file" accept=".jpg,.png,.jpeg" name = "img_file" id="img_file" value="not specified">
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="category">دسته (Category):</label>
+						<select class="form-control" name="category" id="category" >
+							{%  for category in categories %}
+                                {% if category.name == module_category.name %}
+								    <option selected>{{ category.name }}</option>
+                                {% else %}
+                                    <option>{{ category.name }}</option>
+                                {% endif %}
+							{% endfor %}
+						</select>
+					</div>
+					<div class="form-group">
+						<label class="control-label" for="ws_type">نوع وب سرویس:</label>
+						<select class="form-control" dir="ltr" name="ws_type" id="ws_type">
+                            {% if module.ws_type == 'json' %}
+                                <option selected>json</option>
+                                <option selected>form-data</option>
+                            {% else %}
+                                <option>json</option>
+                                <option selected>form-data</option>
+                            {% endif %}
+						</select>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+
+					<div class="form-group">
+						<label class="control-label" for="description">توضیح:</label>
+                        <div id="editor">
+							<textarea class="form-control" rows="9" style="margin-top: 30px;" placeholder="توضیحات" id='description' name="description">
+                                {{ module.description }}
+                            </textarea>
+						</div>
+
+					</div>
+
+				</div>
+
+			</div>
+
+			<!-- INPUTS -->
+
+			<div class="panel panel-success">
+				<div class="panel-heading" style="text-align:center;"><h4>ورودی ها</h4></div>
+				<div id="wrapper_in" class="panel-body" style="background-color: #fbfbfb;">
+					<label id="btn_add_in" style="cursor: pointer; margin-bottom: 15px;"><i class="fas fa-plus"></i><span style="margin: 0 8px 0 20px;">افزودن </span> </label>
+
+                    {% set input_row_counter = namespace(a=1) %}
+                    {% for input in inputs %}
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col-sm-3">
+                                <input type="text" dir="rtl" class="form-control control-1" name="name_in{{ input_row_counter.a }}" value="{{ input.name }}">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" dir="ltr" class="form-control control-3" name="script_name_in{{ input_row_counter.a }}" value="{{ input.script_name }}">
+                            </div>
+                            <div class="col-sm-3">
+                                <div class="form-group">
+                                    <select class="form-control control-2" dir="auto" name="type_in{{ input_row_counter.a }}">
+                                        {%  for data_type in data_types %}
+                                            {% if data_type.id == input.data_type_id %}
+                                                <option selected>{{ data_type.name }}</option>
+                                            {% else %}
+                                                <option>{{ data_type.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <label  class="remove" style="cursor: pointer;"><i class="fas fa-trash-alt"></i> </label>
+                            </div>
+                        </div>
+                    {% set input_row_counter.a = input_row_counter.a + 1 %}
+                    {% endfor %}
+
+                    <!--یک سطر خالی-->
+                    {% set input_row_counter.a = input_row_counter.a + 1 %}
+                    <div class="row" style="margin-bottom: 5px;">
+                        <div class="col-sm-3">
+                            <input type="text" dir="rtl" class="form-control control-1" name="name_in{{ input_row_counter.a }}" placeholder="نام ورودی">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" dir="ltr" class="form-control control-3" name="script_name_in{{ input_row_counter.a }}" placeholder="Input Name (En)">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="form-control control-2" dir="auto" name="type_in{{ input_row_counter.a }}">
+                                    {%  for data_type in data_types %}
+                                        <option>{{ data_type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label  class="remove" style="cursor: pointer;"><i class="fas fa-trash-alt"></i> </label>
+                        </div>
+                    </div>
+
+
+
+				</div>
+			</div>
+
+			<!-- OUTPUTS -->
+
+			<div class="panel panel-danger">
+				<div class="panel-heading" style="text-align:center;"><h4>خروجی ها</h4></div>
+				<div id="wrapper_out" class="panel-body" style="background-color: #fbfbfb;">
+
+					<label id="btn_add_out" style="cursor: pointer; margin-bottom: 15px;"><i class="fas fa-plus"></i><span style="margin: 0 8px 0 20px;">افزودن </span> </label>
+
+                    {% set output_row_counter = namespace(a=1) %}
+                    {% for output in outputs %}
+                        <div class="row" style="margin-bottom: 5px;">
+                            <div class="col-sm-3">
+                                <input type="text" dir="rtl" class="form-control control-1" name="name_out{{ output_row_counter.a }}" value="{{output.name}}">
+                            </div>
+                            <div class="col-sm-3">
+                                <input type="text" dir="ltr" class="form-control control-3" name="script_name_out{{ output_row_counter.a }}" value="{{ output.script_name }}">
+                            </div>
+                            <div class="col-sm-3">
+
+                                <div class="form-group">
+                                    <select class="form-control control-2" dir="auto" name="type_out{{ output_row_counter.a }}">
+                                        {%  for data_type in data_types %}
+                                            {% if data_type.id == output.data_type_id %}
+                                                <option selected>{{ data_type.name }}</option>
+                                            {% else %}
+                                                <option>{{ data_type.name }}</option>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-3">
+                                <label  class="remove" style="cursor: pointer;"><i class="fas fa-trash-alt"></i> </label>
+                            </div>
+                        </div>
+                    {% set output_row_counter.a = output_row_counter.a + 1 %}
+                    {% endfor %}
+
+                    <!--یک سطر خالی-->
+                    {% set output_row_counter.a = output_row_counter.a + 1 %}
+                    <div class="row" style="margin-bottom: 5px;">
+                        <div class="col-sm-3">
+                            <input type="text" dir="rtl" class="form-control control-1" name="name_out{{ output_row_counter.a }}" placeholder="نام خروجی">
+                        </div>
+                        <div class="col-sm-3">
+                            <input type="text" dir="ltr" class="form-control control-3" name="script_name_out{{ output_row_counter.a }}" placeholder="Input Name (En)">
+                        </div>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <select class="form-control control-2" dir="auto" name="type_out{{ output_row_counter.a }}">
+                                    {%  for data_type in data_types %}
+                                        <option>{{ data_type.name }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-sm-3">
+                            <label  class="remove" style="cursor: pointer;"><i class="fas fa-trash-alt"></i> </label>
+                        </div>
+                    </div>
+
+				</div>
+			</div>
+
+			<div style="text-align: center;">
+				<button type="submit" class="btn btn-success btn-lg">ثبت تغییرات</button>
+			</div>
+		</form>
+	</div>
+	</div>
+</div>
+
+<style>
+	.fa-trash-alt{
+		font-size: 1.6em;
+		color: red;
+		border-radius: 50%;
+		padding: 26%;
+	}
+	.fa-plus{
+		background-color: green;
+		padding: 10%;
+		color: white;
+		border-radius: 50%;
+		font-size: 1.2em;
+	}
+	#btn_add_out, #btn_add_in, #btn_add_in_param
+	{
+		padding: 5px 5px 5px 10px;
+		background-color: #bcedbc;
+		border-radius: 50px;
+	}
+
+</style>
+
+
+<script
+	src="../../static/jquery/jquery-2.2.4.js"
+	integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+	crossorigin="anonymous">
+</script>
+
+<script>
+$( document ).ready(function() {
+	var index_in = {{ input_row_counter.a }};
+
+    $("#btn_add_in").click(function(){
+        index_in++;
+        var clone_element_in = $("#wrapper_in .row").first().clone();
+
+        clone_element_in.find(".control-1").attr('name', "name_in"+index_in);
+        clone_element_in.find(".control-1").val("");
+
+        clone_element_in.find(".control-2").attr('name', "type_in"+index_in);
+
+		clone_element_in.find(".control-3").attr('name', "script_name_in"+index_in);
+		clone_element_in.find(".control-3").val("");
+
+        clone_element_in.appendTo("#wrapper_in");
+	});
+
+    $("body").on('click', '#wrapper_in .remove',function(){
+    	if($('#wrapper_in').children('.row').length >1)
+        $(this).closest(".row").remove();
+    });
+
+
+    var index_out = {{ output_row_counter.a }};
+
+    $("#btn_add_out").click(function(){
+        index_out++;
+        var clone_element_out = $("#wrapper_out .row").first().clone();
+
+        clone_element_out.find(".control-1").attr('name', "name_out"+index_out);
+        clone_element_out.find(".control-1").val("");
+
+        clone_element_out.find(".control-2").attr('name', "type_out"+index_out);
+
+		clone_element_out.find(".control-3").attr('name', "script_name_out"+index_out);
+		clone_element_out.find(".control-3").val("");
+
+		clone_element_out.appendTo("#wrapper_out");
+	});
+
+    $("body").on('click', '#wrapper_out .remove',function(){
+    	if($('#wrapper_out').children('.row').length >1)
+        $(this).closest(".row").remove();
+    });
+
+
+});
+
+</script>
+
+
+<!--scripts for froala editor-->
+
+<script type="text/javascript" src="\static\froala\jquery.min.js"></script>
+<script type="text/javascript" src="\static\froala\codemirror.min.js"></script>
+<script type="text/javascript" src="\static\froala\xml.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\froala_editor.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\align.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\code_beautifier.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\code_view.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\draggable.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\image.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\image_manager.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\link.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\lists.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\paragraph_format.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\paragraph_style.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\table.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\video.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\url.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\entities.min.js"></script>
+
+<script>
+    $(function(){
+      $('#description')
+        .froalaEditor({enter: $.FroalaEditor.ENTER_P, placeholderText: null})
+    });
+</script>
+
+
+
+{% endblock %}

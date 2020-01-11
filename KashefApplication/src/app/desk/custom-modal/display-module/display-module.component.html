@@ -1,0 +1,45 @@
+<div class="modal-header">
+  <button type="button" class="close" data-dismiss="modal">&times;</button>
+  <h4 class="modal-title">ماژول نمایشگر</h4>
+</div>
+<div class="modal-body">
+  <div class="panel-group">
+    <div class="panel panel-danger">
+      <div class="panel-heading">مشخصات</div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="control-label">نام ورودی</label>
+            <input class="form-control" type="text" value="{{displayInput.name}}" readonly>
+          </div>
+
+          <div class="col-sm-6">
+            <label class="control-label">نوع</label>
+            <input class="form-control" type="text" value="{{displayInputTypeName}}" readonly>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-sm-6">
+            <label class="control-label">ماژول متصل</label>
+            <input class="form-control" type="text" value="{{linkedModuleName}}" readonly>
+          </div>
+
+          <div class="col-sm-6">
+            <label class="control-label">نام خروجی:</label>
+            <input class="form-control" type="text" value="{{linkedOutputName}}" readonly>
+          </div>
+        </div>
+
+        <div>
+          <div class="row">
+            <div class="col-sm-12">
+              <label class="control-label">مقدار:</label>
+              <textarea class="form-control" rows="5" dir="auto" readonly>{{linkedOutputValue}}</textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

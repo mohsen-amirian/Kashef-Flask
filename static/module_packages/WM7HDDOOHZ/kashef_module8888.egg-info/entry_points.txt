@@ -1,0 +1,3 @@
+[orange.widgets]
+برق = kashef_module8888
+

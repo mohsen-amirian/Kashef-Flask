@@ -1,0 +1,46 @@
+
+<div class="panel panel-primary" style="margin-top:40px">
+    <div class="panel-heading" style="text-align:center;">
+        <h4>لیست دسته های موجود</h4>
+    </div>
+    <div class="panel-body" style="background-color: #fbfbfb;">
+        <div class="row content">
+            <div class="panel panel-info">
+              <div class="panel-body">
+                    <table class="table table-hover">
+                      <thead>
+                        <tr>
+                          <th>نام دسته</th>
+                          <th>وضعیت</th>
+                          <th></th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                          {%  for module in my_modules %}
+                        <tr>
+                          <td>{{ module.name }}</td>
+                          {% if module.is_approved %}
+                              <td>تایید شده</td>
+                          {% else %}
+                              <td>تایید نشده</td>
+                          {% endif %}
+                          <td><button type="button" class="btn btn-danger" onclick="window.location.href='/moduleinfo/{{ module.id }}'">مشاهده ماژول</button></td>
+                          <td><button type="button" class="btn btn-success" onclick="window.location.href='/editmodule/{{ module.id }}'">ویرایش ماژول</button></td>
+                        </tr>
+                      {%  endfor %}
+                        </tr>
+                      </tbody>
+                    </table>
+
+                    <form method="POST" enctype = "multipart/form-data">
+                        <div class="form-group">
+                            <label class="control-label" for="icon_file">بار گزاری فرآیند جدید:</label>
+                            <input class="form-control" type = "file" accept=".kpp" name = "icon_file" id="icon_file" required>
+					    </div>
+                    </form>
+
+              </div>
+            </div>
+        </div>
+    </div>
+</div>

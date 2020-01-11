@@ -1,0 +1,126 @@
+{% extends "layouts/_base_layout_developer.html" %}
+{% block content %}
+
+<div class="container">
+    <h2 style="text-align:center; margin-top:50px;">{%trans%}کارهای من{%endtrans%}</h2>
+    <div class="panel panel-primary" style="margin-top:40px">
+        <div class="panel-heading" style="text-align:center;">
+            <h4>لیست ماژول های من</h4>
+        </div>
+        <div class="panel-body" style="background-color: #fbfbfb;">
+            <div class="row content">
+                <div class="panel panel-info">
+                  <div class="panel-body">
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>نام ماژول</th>
+                              <th>وضعیت</th>
+                              <th></th>
+                              <th></th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {%  for module in my_modules %}
+                            <tr>
+                              <td>{{ module.name }}</td>
+                              {% if module.is_approved %}
+                                  <td>تایید شده</td>
+                              {% else %}
+                                  <td style="color:red">تایید نشده</td>
+                              {% endif %}
+                              <td><button type="button" class="btn btn-danger" onclick="window.location.href='/module-info/{{ module.id }}'">مشاهده ماژول</button></td>
+                              <td><button type="button" class="btn btn-success" onclick="window.location.href='/module-edit/{{ module.id }}'">ویرایش ماژول</button></td>
+                              <td><button type="button" class="btn btn-warning" onclick="window.location.href='/module-delete/{{ module.id }}'">حذف ماژول</button></td>
+                            </tr>
+                          {%  endfor %}
+                          </tbody>
+                        </table>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Bought Modules-->
+
+    <div class="panel panel-primary" style="margin-top:40px">
+        <div class="panel-heading" style="text-align:center;">
+            <h4>لیست ماژول های خریداری شده</h4>
+        </div>
+        <div class="panel-body" style="background-color: #fbfbfb;">
+            <div class="row content">
+                <div class="panel panel-info">
+                  <div class="panel-body">
+                        <table class="table table-hover">
+                          <thead>
+                            <tr>
+                              <th>نام ماژول</th>
+                              <th>وضعیت</th>
+                              <th></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                          {%  for module in bought_modules %}
+                            <tr>
+                              <td>{{ module.name }}</td>
+                              {% if module.is_approved %}
+                                  <td>تایید شده</td>
+                              {% else %}
+                                  <td style="color:red">تایید نشده</td>
+                              {% endif %}
+                              <td><button type="button" class="btn btn-danger" onclick="window.location.href='/module-info/{{ module.id }}'">مشاهده ماژول</button></td>
+                            </tr>
+                          {%  endfor %}
+                          </tbody>
+                        </table>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--Processes-->
+
+    <div class="panel panel-success" style="margin-top:40px">
+        <div class="panel-heading" style="text-align:center;">
+            <h4>لیست فرآیند های من</h4>
+        </div>
+        <div class="panel-body" style="background-color: #fbfbfb;">
+            <div class="row content">
+                <div class="panel panel-info">
+                  <div class="panel-body">
+                      <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>نام فرآیند</th>
+                                <th>وضعیت</th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {%  for process in my_processes %}
+                            <tr>
+                                <td>{{ process.name }}</td>
+                                {% if process.is_approved %}
+                                    <td>تایید شده</td>
+                                {% else %}
+                                    <td style="color:red">تایید نشده</td>
+                                {% endif %}
+                                <td><button type="button" class="btn btn-danger" onclick="window.location.href='/process-info/{{ process.id }}'">مشاهده فرآیند</button></td>
+                                <td><button type="button" class="btn btn-success" onclick="window.location.href='/process-edit/{{ process.id }}'">ویرایش فرآیند</button></td>
+                                <td><button type="button" class="btn btn-warning" onclick="window.location.href='/process-delete/{{ process.id }}'">حذف فرآیند</button></td>
+                            </tr>
+                        {%  endfor %}
+                        </tbody>
+                  </table>
+                  </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

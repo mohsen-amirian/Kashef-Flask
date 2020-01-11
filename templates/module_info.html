@@ -1,0 +1,120 @@
+{% if role == 'Admin' %}
+    {% extends "layouts/_base_layout_admin.html" %}
+{% elif role == 'ModuleDeveloper' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% elif role == 'not_approved_dev' %}
+    {% extends "layouts/_base_layout_developer.html" %}
+{% else %}
+    {% extends "layouts/_base_layout.html" %}
+{% endif %}
+
+{% block content %}
+
+<div class="container-fluid">
+  <div class="row content">
+      <h4><small>اطلاعات ماژول</small></h4>
+      <hr>
+      <h2>{{ module.name }}</h2>
+      {% if module.is_approved %}
+        <h5><span class="label label-success">تایید شده</span></h5>
+      {% else %}
+        <h5><span class="label label-danger">تایید نشده</span></h5>
+      {% endif %}
+  </div>
+  <div class="row content" style="margin-top:40px">
+      <div class="col-sm-9">
+          <div>{{ module.description|safe }}</div>
+          <h5>
+          {%  for tag in module.tags %}
+              <span class="label label-success">{{ tag.name }}</span>
+          {%  endfor %}
+          </h5>
+      </div>
+      <div class="col-sm-3">
+          <div class="panel-body">
+              {% if module.image_address == '' %}
+                <img class="img-responsive" src="/static/module_images/sample_module3.jpg" style="width:100%">
+              {% else %}
+                <img class="img-responsive" src="{{ module.image_address }}" style="width:100%">
+              {% endif %}
+
+              <br><br>
+              {% if is_admin_or_module_owner %}
+                  {#he is module owner or admin#}
+              {% elif current_user.is_authenticated %}
+                {% if bought_module %}
+                    <span class="label label-default">شما این ماژول را خریداری کرده اید</span>
+                {% else %}
+                    <button type="button" class="btn btn-success" onclick="window.location.href='/buy-module/{{ module.id }}'" style="width:100%">خرید ماژول</button>
+                {% endif %}
+              {% else %}
+                <span class="label label-default">برای خرید ماژول می بایست در سایت ثبت نام کنید</span>
+              {% endif %}
+          </div>
+      </div>
+  </div>
+
+
+  <div class="panel panel-primary" style="margin-top:40px">
+        <div class="panel-heading" style="text-align:center;">
+            <h4>ورودی ها و خروجی های ماژول</h4>
+        </div>
+        <div class="panel-body" style="background-color: #fbfbfb;">
+            <div class="row content">
+
+                <div class="col-sm-6">
+                    <div class="panel panel-info">
+                      <div class="panel-heading">ورودی ها</div>
+                      <div class="panel-body">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th>نام ورودی</th>
+                                <th>نوع</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {%  for key,value in inputs.items() %}
+                              <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                              </tr>
+                            {%  endfor %}
+                            </tbody>
+                          </table>
+
+                      </div>
+                    </div>
+                </div>
+
+
+                <div class="col-sm-6">
+                    <div class="panel panel-info">
+                      <div class="panel-heading">خروجی ها</div>
+                      <div class="panel-body">
+                          <table class="table table-hover">
+                            <thead>
+                              <tr>
+                                <th>نام خروجی</th>
+                                <th>نوع</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                            {%  for key,value in outputs.items() %}
+                              <tr>
+                                <td>{{ key }}</td>
+                                <td>{{ value }}</td>
+                              </tr>
+                            {%  endfor %}
+                            </tbody>
+                          </table>
+                      </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+  </div>
+</div>
+
+{% endblock %}

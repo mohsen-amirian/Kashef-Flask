@@ -1,0 +1,140 @@
+{% extends "layouts/_base_layout_developer.html" %}
+{% block content %}
+
+
+<div  class="container" style="direction:rtl; padding-top:50px; padding-bottom:80px;">
+	<div class="panel panel-default" style="padding-bottom:20px;">
+	  <div class="panel-body">
+
+		<div class="jumbotron">
+			<h3 style="text-align: center;">اطلاعات فرآیند خود را با دقت در فرم زیر وارد کنید</h3>
+		</div>
+
+		{% if duplicate_name %}
+          <p style="color:red">
+			  نام دیگری برای فرآیند خود انتخاب کنید، این نام قبلا استفاده شده است.
+		  </p>
+        {% endif %}
+
+		{% if duplicate_package_name %}
+        <p style="color:red">
+			  نام دیگری برای پکیج خود انتخاب کنید، این نام قبلا استفاده شده است.
+		</p>
+        {% endif %}
+
+		{% if kpp_file_error %}
+        <p style="color:red">
+			  اشکال در فایل فرآیند، دوباره امتحان کنید.
+		</p>
+        {% endif %}
+
+		{% if img_file_error %}
+        <p style="color:red">
+			  اشکال در فایل تصویر، دوباره امتحان کنید.
+		</p>
+        {% endif %}
+
+		<form action="/render-process-register-form/" method="POST" enctype = "multipart/form-data">
+			<div class="row">
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label" for="name">نام فرآیند:</label>
+						<input type="text" class="form-control" name="name" id="name" placeholder="نام فرآیند" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="package_name">نام پکیج (به انگلیسی):</label>
+						<input style="dir='ltr'" type="text" class="form-control" name="package_name" id="package_name" placeholder="نام پکیج (در صورت نیاز به تغییر)">
+					</div>
+
+                    <div class="form-group">
+						<label class="control-label" for="kpp_file">انتخاب فایل فرآیند:</label>
+						<input class="form-control" type = "file" accept=".kpp" name = "kpp_file" id="kpp_file" required>
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="img_file">انتخاب فایل تصویر:</label>
+						<input class="form-control" type = "file" accept=".jpg,.png,.jpeg" name = "img_file" id="img_file" value="not specified" required>
+					</div>
+				</div>
+
+				<div class="col-sm-6">
+					<div class="form-group">
+						<label class="control-label" for="description">توضیحات:</label>
+						<div id="editor">
+							<textarea class="form-control" rows="9" style="margin-top: 30px;" placeholder="توضیحات" id='description' name="description"></textarea>
+						</div>
+					</div>
+				</div>
+
+			</div>
+
+			<div style="text-align: center;">
+				<button type="submit" class="btn btn-success btn-lg">ثبت فرآیند</button>
+				<input type="reset" class="btn btn-danger btn-lg" value="پاک کردن فرم">
+			</div>
+		</form>
+	  </div>
+	</div>
+</div>
+
+<style>
+	.fa-trash-alt{
+		font-size: 1.6em;
+		color: red;
+		border-radius: 50%;
+		padding: 26%;
+	}
+	.fa-plus{
+		background-color: green;
+		padding: 10%;
+		color: white;
+		border-radius: 50%;
+		font-size: 1.2em;
+	}
+	#btn_add_out, #btn_add_in, #btn_add_in_param
+	{
+		padding: 5px 5px 5px 10px;
+		background-color: #bcedbc;
+		border-radius: 50px;
+	}
+
+</style>
+
+
+<script
+	src="../../static/jquery/jquery-2.2.4.js"
+	integrity="sha256-iT6Q9iMJYuQiMWNd9lDyBUStIq/8PuOW33aOqmvFpqI="
+	crossorigin="anonymous">
+</script>
+
+
+<!--scripts for froala editor-->
+
+<script type="text/javascript" src="\static\froala\jquery.min.js"></script>
+<script type="text/javascript" src="\static\froala\codemirror.min.js"></script>
+<script type="text/javascript" src="\static\froala\xml.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\froala_editor.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\align.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\code_beautifier.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\code_view.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\draggable.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\image.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\image_manager.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\link.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\lists.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\paragraph_format.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\paragraph_style.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\table.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\video.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\url.min.js"></script>
+<script type="text/javascript" src="\static\froala\js\plugins\entities.min.js"></script>
+
+<script>
+    $(function(){
+      $('#description')
+        .froalaEditor({enter: $.FroalaEditor.ENTER_P, placeholderText: null})
+    });
+</script>
+
+{% endblock %}

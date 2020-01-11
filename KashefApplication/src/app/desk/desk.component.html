@@ -1,0 +1,77 @@
+<div class="myNetwork" #myNetwork></div>
+<!--<pre class="eventSpan"></pre>-->
+<app-desk-toolbar></app-desk-toolbar>
+<app-register-process></app-register-process>
+<app-custom-modal>
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog">
+
+      <div class="modal-content">
+
+        <!-- Module Config -->
+        <ng-container *ngIf="openNodeConfigModal && !openInputGetterModule && !openDisplayModule">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">تنظیمات ماژول</h4>
+          </div>
+          <div class="modal-body">
+            <p>{{selectedModule.name}}</p>
+            <div class="panel-group">
+              <div class="panel panel-primary">
+                <div class="panel-heading">خروجی ها</div>
+                <div class="panel-body">
+                  <ng-container *ngFor="let output of selectedModule.outputs">
+                    <app-output-link
+                      [selectedModule]="selectedModule"
+                      [selectedOutput]="output">
+                    </app-output-link>
+                  </ng-container>
+                </div>
+              </div>
+              <div class="panel panel-warning">
+                <div class="panel-heading">ورودی ها</div>
+                <div class="panel-body">
+                  <ng-container *ngFor="let input of selectedModule.inputs">
+                    <app-input-link
+                      [selectedModule]="selectedModule"
+                      [selectedInput]="input">
+                    </app-input-link>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button (click)="onModuleConfigModalSaveClicked()" type="button" class="btn btn-success" data-dismiss="modal">ذخیره
+            </button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+          </div>
+        </ng-container>
+
+        <!-- Display Module-->
+        <ng-container *ngIf="!openNodeConfigModal && !openInputGetterModule && openDisplayModule">
+          <app-display-module [displayModule]="selectedModule"
+          ></app-display-module>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+          </div>
+        </ng-container>
+
+        <!-- Input Getter Module-->
+        <ng-container *ngIf="!openNodeConfigModal && openInputGetterModule && !openDisplayModule">
+          <app-input-getter [inputGetterModule]="selectedModule">
+          </app-input-getter>
+          <div class="modal-footer">
+            <button (click)="onInputGetterModalSaveClicked()" type="button" class="btn btn-success" data-dismiss="modal">ذخیره
+            </button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">بستن</button>
+          </div>
+        </ng-container>
+
+      </div>
+
+    </div>
+  </div>
+
+</app-custom-modal>
+

@@ -1,0 +1,7 @@
+<select [(ngModel)]="value"
+  (change)="onDropdownSelectedItemChange($event.target.value)"
+  class="form-control" name="module-name" id="module-name">
+  <option *ngFor="let item of dropdownItems" value="{{item.value}}">
+    {{item.text}}
+  </option>
+</select>

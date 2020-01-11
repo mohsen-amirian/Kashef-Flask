@@ -42,7 +42,7 @@ export class Api {
   }
 
   //returns url of the file
-  public static sendFileToCloudStorage(file: File) : Promise<any> {
+  public static sendFileToCloudStorage(file: File): Promise<any> {
     let form = new FormData();
     form.append('file', file);
     let promise = new Promise((resolve => {
@@ -57,8 +57,8 @@ export class Api {
   }
 
   //returns file
-  public static getFileFromCloudStorage(url: string) : Promise<any> {
-    const http = new HttpClient(new HttpXhrBackend({ build: () => new XMLHttpRequest() }));
+  public static getFileFromCloudStorage(url: string): Promise<any> {
+    const http = new HttpClient(new HttpXhrBackend({build: () => new XMLHttpRequest()}));
     let promise = new Promise(((resolve) => {
       http.get(url, {responseType: 'blob'}).subscribe
       ((data: any) => {

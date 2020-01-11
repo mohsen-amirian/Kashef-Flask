@@ -9,20 +9,47 @@ from db_manager import DbManager
 import db_initiator
 import config
 
-
 from api.store.endpoints.users import ns as store_users_namespace
 from api.store.endpoints.modules import ns as store_modules_namespace
 from api.store.endpoints.processes import ns as store_process_namespace
 from api.store.endpoints.categories import ns as store_categories_namespace
 from api.restplus import api
 from flask_cors import CORS
+from flask_babelex import Babel
+
+class ConfigClass(object):
+    """ Flask application config """
+
+    # Flask settings
+    SECRET_KEY = config.secret_key
+
+    # Flask-SQLAlchemy settings
+    SQLALCHEMY_DATABASE_URI = config.data_base_uri  # File-based SQL database
+    SQLALCHEMY_TRACK_MODIFICATIONS = False  # Avoids SQLAlchemy warning
+
+    # Flask-User settings
+    USER_APP_NAME = "KASHEF"  # Shown in and email templates and page footers
+    USER_ENABLE_EMAIL = False  # Enable email authentication
+    USER_ENABLE_USERNAME = True  # Disable username authentication
+    USER_REQUIRE_RETYPE_PASSWORD = True  # Simplify register form
+
+    BABEL_DEFAULT_LOCALE = 'fa'
 
 
 app = Flask(__name__)
 cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
-# app.config.from_object(__name__ + '.ConfigClass')
+app.config.from_object(__name__ + '.ConfigClass')
 
-# babel = Babel(app)
+babel = Babel(app)
+
+# Create all database tables
+with app.app_context():
+    db.init_app(app)
+    db.create_all()
+    user_manager = UserManager(app, db, User)
+    di = db_initiator.DbInitiator()
+    di.create_users(user_manager)
+
 
 ############################################################################################
 @app.route('/')
@@ -571,39 +598,8 @@ def after_request(response):
 ############################################################################################
 # Start development web server
 
-def configure_app(flask_app):
-    flask_app.config['SERVER_NAME'] = config.server_name
-    flask_app.config['SECRET_KEY'] = config.secret_key
-    flask_app.config['USER_APP_NAME'] = config.USER_APP_NAME
-    flask_app.config['USER_ENABLE_EMAIL'] = config.USER_ENABLE_EMAIL
-    flask_app.config['USER_ENABLE_USERNAME'] = config.USER_ENABLE_USERNAME
-    flask_app.config['USER_REQUIRE_RETYPE_PASSWORD'] = config.USER_REQUIRE_RETYPE_PASSWORD
 
-    flask_app.config['SQLALCHEMY_DATABASE_URI'] = config.data_base_uri
-    flask_app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = config.SQLALCHEMY_TRACK_MODIFICATIONS
-    flask_app.config['SWAGGER_UI_DOC_EXPANSION'] = config.RESTPLUS_SWAGGER_UI_DOC_EXPANSION
-    flask_app.config['RESTPLUS_VALIDATE'] = config.RESTPLUS_VALIDATE
-    flask_app.config['RESTPLUS_MASK_SWAGGER'] = config.RESTPLUS_MASK_SWAGGER
-    flask_app.config['ERROR_404_HELP'] = config.RESTPLUS_ERROR_404_HELP
-
-
-def initialize_app(flask_app):
-    configure_app(flask_app)
-
-def create_db_tables():
-    with app.app_context():
-        db.init_app(app)
-        db.create_all()
-        user_manager = UserManager(app, db, User)
-        di = db_initiator.DbInitiator()
-        di.create_users(user_manager)
-
-
-def main():
-    initialize_app(app)
-
-    # Create all database tables
-    create_db_tables()
+if __name__ == '__main__':
 
     blueprint = Blueprint('api', __name__, url_prefix='/api')
     api.init_app(blueprint)
@@ -612,8 +608,7 @@ def main():
     api.add_namespace(store_process_namespace)
     api.add_namespace(store_categories_namespace)
     app.register_blueprint(blueprint)
-    app.run(debug=False)
 
-
-if __name__ == '__main__':
-    main()
+    app.run(host='0.0.0.0', port=5000, debug=True)
+    # di = db_initiator.DbInitiator()
+    # di.create_users(user_manager)

@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy
 from flask_user import UserMixin
+import json
+from json import JSONEncoder
 
 db = SQLAlchemy()
 
@@ -98,6 +100,7 @@ class UserProcess(db.Model):
     id = db.Column(db.Integer(), primary_key=True)
     user_id = db.Column(db.Integer(), db.ForeignKey('users.id', ondelete='CASCADE'))
     process_id = db.Column(db.Integer(), db.ForeignKey('processes.id', ondelete='CASCADE'))
+
 
 class Category(db.Model):
     __tablename__ = 'categories'

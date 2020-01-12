@@ -687,7 +687,7 @@ def get_module_item(id):
     return Module.query.filter(Module.id.in_(bought_modules_ids)).all()
 
 ############################################################################################
-@app.route('/store/processes/user-processes')
+@app.route('/store/processes/user-processes', methods=['GET'])
 def user_processes():
     not_approved_processes = Process.query.filter((Process.is_approved == 0) | (Process.is_deleted == 1)).all()
     not_approved_process_ids = []
@@ -711,7 +711,7 @@ def user_processes():
     bought_processes_ids = list(set(bought_processes_ids))
     final_processes_to_send = Process.query.filter(Process.id.in_(bought_processes_ids)).all()
 
-    return final_processes_to_send
+    return json.dumps(serializer.process_serializer(final_processes_to_send))
 
 ############################################################################################
 @app.after_request

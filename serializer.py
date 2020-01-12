@@ -26,3 +26,23 @@ def module_serializer(module_list):
         final_list.append(temp_module)
 
     return final_list
+
+
+def process_serializer(process_list):
+    final_list = []
+    for process in process_list:
+        temp_process = {}
+        temp_process['id'] = process.id
+        temp_process['name'] = process.name
+        temp_process['package_name'] = process.package_name
+        temp_process['description'] = process.description
+        temp_process['json_file'] = process.json_file
+        temp_process['creation_date'] = process.creation_date
+        temp_process['last_modified_date'] = process.last_modified_date
+        temp_process['is_deleted'] = process.is_deleted
+        temp_process['image_address'] = process.image_address
+        temp_process['is_approved'] = process.is_approved
+        temp_process['user_id'] = process.user_id
+        final_list.append(temp_process)
+
+    return final_list

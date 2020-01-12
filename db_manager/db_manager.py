@@ -1,4 +1,4 @@
-from models import db, User, Module, UserRoles, Role, Input, InputParameter, Output, Process, UserModules, UserProcess
+from db_manager.models import db, User, Module, UserRoles, Role, Input, InputParameter, Output, Process, UserModules, UserProcess
 
 
 class DbManager:

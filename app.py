@@ -1,17 +1,18 @@
-from flask import Flask, Blueprint, render_template, request, redirect, jsonify
-from models import db, Module, \
+from flask import Flask, Blueprint, render_template, request, redirect
+from db_manager.models import db, Module, \
     User, Role, UserRoles, Output, \
     Input, InputParameter, DataType, \
     Category, Process, UserModules, \
     UserProcess
-from flask_user import UserManager, UserMixin, login_required, roles_required, current_user
-import module_register
-from process_register import ProcessRegister
-from process_edit import ProcessEdit
-from module_edit import ModuleEdit
-from db_manager import DbManager
-import db_initiator
-import config
+from flask_user import UserManager, roles_required, current_user
+
+from module_package import module_register
+from module_package.module_edit import ModuleEdit
+from process_package.process_register import ProcessRegister
+from process_package.process_edit import ProcessEdit
+from db_manager.db_manager import DbManager
+from db_manager import db_initiator
+from configuration import config
 
 from api.store.endpoints.users import ns as store_users_namespace
 from api.store.endpoints.modules import ns as store_modules_namespace
@@ -22,7 +23,8 @@ from flask_cors import CORS
 from flask_babelex import Babel
 
 import json
-import serializer
+from business import serializer
+
 
 class ConfigClass(object):
     """ Flask application config """

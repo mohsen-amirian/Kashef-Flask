@@ -1,4 +1,4 @@
-from models import db, User, Role
+from db_manager.models import db, User, Role
 import datetime
 
 

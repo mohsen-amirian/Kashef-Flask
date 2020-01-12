@@ -1,5 +1,5 @@
-from models import db
-from models import Process, UserProcess
+from db_manager.models import db
+from db_manager.models import Process, UserProcess
 from flask_user import current_user
 
 

@@ -3,9 +3,9 @@ import os
 import random
 from werkzeug.utils import secure_filename
 import shutil
-from models import db, Process
+from db_manager.models import db, Process
 import datetime
-import config
+from configuration import config
 
 
 class ProcessRegister:

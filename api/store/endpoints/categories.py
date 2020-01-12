@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from api.store.serializers import module_categories
 from api.restplus import api
-from models import Category
+from db_manager.models import Category
 
 ns = api.namespace('store/categories', description='Operations related to store Categories')
 

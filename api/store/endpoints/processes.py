@@ -4,7 +4,7 @@ from flask_restplus import Resource
 from api.store.serializers import store_process
 from api.store.business import create_new_process
 from api.restplus import api
-from models import Process, UserProcess
+from db_manager.models import Process, UserProcess
 from flask import request
 from flask_user import current_user
 

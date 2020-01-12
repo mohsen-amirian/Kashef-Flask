@@ -2,8 +2,8 @@ import os
 import random
 from werkzeug.utils import secure_filename
 import shutil
-from models import db, Process
-import config
+from db_manager.models import db, Process
+from configuration import config
 import datetime
 
 

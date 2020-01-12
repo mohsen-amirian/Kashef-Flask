@@ -1,7 +1,7 @@
 from flask_restplus import Resource
 from api.store.serializers import store_module, user_modules
 from api.restplus import api
-from models import Module, UserModules, Input, InputParameter, Output, DataType
+from db_manager.models import Module, UserModules, Input, InputParameter, Output, DataType
 from flask_user import current_user
 
 # log = logging.getLogger(__name__)

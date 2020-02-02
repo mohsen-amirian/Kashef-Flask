@@ -1202,6 +1202,8 @@ var RegisterProcessComponent = /** @class */ (function () {
 __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Api", function() { return Api; });
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm5/http.js");
+/* harmony import */ var _module_management__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./module-management */ "./src/app/share/module-management.ts");
+
 
 var Api = /** @class */ (function () {
     function Api() {
@@ -1240,7 +1242,7 @@ var Api = /** @class */ (function () {
         var form = new FormData();
         form.append('file', file);
         var promise = new Promise((function (resolve) {
-            _this.postApiFormData('http://127.0.0.1:5050/upload/', form).then(function (data) {
+            _this.postApiFormData(_module_management__WEBPACK_IMPORTED_MODULE_1__["ModuleManagement"].cloudStorageIP + '/upload/', form).then(function (data) {
                 resolve(data.url);
             });
         }));
@@ -1710,6 +1712,12 @@ var ModuleManagement = /** @class */ (function () {
     ModuleManagement.edges = new vis__WEBPACK_IMPORTED_MODULE_1__["DataSet"]();
     ModuleManagement.edgeIds = [];
     ModuleManagement.runProcess = false;
+    // http://37.152.176.166:5000  server
+    // http://127.0.0.1:5000  local
+    ModuleManagement.storeIP = 'http://37.152.176.166:5000';
+    // http://127.0.0.1:5050 local
+    // http://137.152.176.166:8040 Server
+    ModuleManagement.cloudStorageIP = 'http://37.152.176.166:8040';
     return ModuleManagement;
 }());
 
@@ -1965,7 +1973,7 @@ var LoadProcessComponent = /** @class */ (function () {
     };
     LoadProcessComponent.prototype.getAllUserProcesses = function () {
         var _this = this;
-        _share_api__WEBPACK_IMPORTED_MODULE_2__["Api"].getApi('http://37.152.185.19:5000/store/processes/user-processes').then(function (serverProcesses) {
+        _share_api__WEBPACK_IMPORTED_MODULE_2__["Api"].getApi(_share_module_management__WEBPACK_IMPORTED_MODULE_4__["ModuleManagement"].storeIP + '/store/processes/user-processes').then(function (serverProcesses) {
             _this.userProcesses = serverProcesses;
             _this.showProcessLoader = true;
         });
@@ -2090,7 +2098,7 @@ var ToolboxComponent = /** @class */ (function () {
         var _this = this;
         this.addInputGetterModule();
         this.addDisplayModule();
-        _share_api__WEBPACK_IMPORTED_MODULE_3__["Api"].getApi('http://37.152.185.19:5000/store/modules/user-modules').then(function (data) {
+        _share_api__WEBPACK_IMPORTED_MODULE_3__["Api"].getApi(_share_module_management__WEBPACK_IMPORTED_MODULE_4__["ModuleManagement"].storeIP + '/store/modules/user-modules').then(function (data) {
             for (var _i = 0, data_1 = data; _i < data_1.length; _i++) {
                 var module = data_1[_i];
                 var newModule = new _share_module_model__WEBPACK_IMPORTED_MODULE_2__["Module"]();
@@ -2135,7 +2143,7 @@ var ToolboxComponent = /** @class */ (function () {
     };
     ToolboxComponent.prototype.getModuleCategories = function () {
         var _this = this;
-        _share_api__WEBPACK_IMPORTED_MODULE_3__["Api"].getApi('http://37.152.185.19:5000/store/categories/all_categories')
+        _share_api__WEBPACK_IMPORTED_MODULE_3__["Api"].getApi(_share_module_management__WEBPACK_IMPORTED_MODULE_4__["ModuleManagement"].storeIP + '/store/categories/all_categories')
             .then(function (allCategories) {
             _this.categories = allCategories;
             _this.chRef.detectChanges();

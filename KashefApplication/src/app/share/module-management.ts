@@ -234,4 +234,13 @@ export class ModuleManagement {
       return 'نامشخص';
     }
   }
+
+  // http://37.152.176.166:5000  server
+  // http://127.0.0.1:5000  local
+  public static storeIP = 'http://37.152.176.166:5000';
+
+
+  // http://127.0.0.1:8030 local
+  // http://137.152.176.166:8030 Server
+  public static cloudStorageIP = 'http://37.152.176.166:8030'
 }

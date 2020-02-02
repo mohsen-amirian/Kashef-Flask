@@ -29,7 +29,7 @@ export class ToolboxComponent implements OnInit {
   private getToolboxModules() {
     this.addInputGetterModule();
     this.addDisplayModule();
-    Api.getApi('http://37.152.185.19:5000/store/modules/user-modules').then(
+    Api.getApi(ModuleManagement.storeIP + '/store/modules/user-modules').then(
       (data: any) => {
         for (const module of data) {
           let newModule: Module = new Module();
@@ -75,7 +75,7 @@ export class ToolboxComponent implements OnInit {
   }
 
   private getModuleCategories() {
-    Api.getApi('http://37.152.185.19:5000/store/categories/all_categories')
+    Api.getApi(ModuleManagement.storeIP + '/store/categories/all_categories')
       .then((allCategories: ICategory[]) => {
         this.categories = allCategories;
         this.chRef.detectChanges();

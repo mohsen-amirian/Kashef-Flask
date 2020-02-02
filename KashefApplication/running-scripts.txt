@@ -1,8 +1,11 @@
 kashef store:
-D:\projects\kashef\KashefModuleStore\venv2\Scripts\python.exe app.py
+D:\Repos\Kashef-Flask\venv2\Scripts\python.exe app.py
 
-webservices:
-D:\projects\kashef\KashefDummyWSs\venv\Scripts\python.exe D:/projects/kashef/KashefDummyWSs/app.py
+Cloud Storage:
+"D:\Program Files\Python\Python37-32\python.exe" app.py
+
+sample webservices:
+D:\Repos\Kashef-SampleWebServices\venv\Scripts\python.exe D:\Repos\Kashef-SampleWebServices\app.py
 
 captcha module:
 D:\projects\kashef\OtherModules\captcha\venv2\Scripts\python.exe main.py

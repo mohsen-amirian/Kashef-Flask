@@ -1,5 +1,6 @@
 import {HttpClient, HttpHeaders, HttpXhrBackend} from "@angular/common/http";
 import {InjectorInstance} from "../app.module";
+import {ModuleManagement} from "./module-management";
 
 export class Api {
 
@@ -46,7 +47,7 @@ export class Api {
     let form = new FormData();
     form.append('file', file);
     let promise = new Promise((resolve => {
-      this.postApiFormData('http://127.0.0.1:5050/upload/', form).then(
+      this.postApiFormData(ModuleManagement.cloudStorageIP + '/upload/', form).then(
         (data: any) => {
           resolve(data.url)
         }

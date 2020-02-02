@@ -25,7 +25,7 @@ export class LoadProcessComponent implements OnInit{
   }
 
   private getAllUserProcesses() {
-    Api.getApi('http://37.152.185.19:5000/store/processes/user-processes').then(
+    Api.getApi(ModuleManagement.storeIP + '/store/processes/user-processes').then(
       (serverProcesses: Process[]) => {
         this.userProcesses = serverProcesses;
         this.showProcessLoader = true;

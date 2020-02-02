@@ -1715,9 +1715,9 @@ var ModuleManagement = /** @class */ (function () {
     // http://37.152.176.166:5000  server
     // http://127.0.0.1:5000  local
     ModuleManagement.storeIP = 'http://37.152.176.166:5000';
-    // http://127.0.0.1:5050 local
-    // http://137.152.176.166:8040 Server
-    ModuleManagement.cloudStorageIP = 'http://37.152.176.166:8040';
+    // http://127.0.0.1:8030 local
+    // http://137.152.176.166:8030 Server
+    ModuleManagement.cloudStorageIP = 'http://37.152.176.166:8030';
     return ModuleManagement;
 }());
 

@@ -1168,7 +1168,8 @@ var RegisterProcessComponent = /** @class */ (function () {
             newProcess.name = this.processName.trim();
             newProcess.description = this.processDescription;
             newProcess.json_file = JSON.stringify(json_file);
-            _share_api__WEBPACK_IMPORTED_MODULE_4__["Api"].postApi('http://127.0.0.1:5000/api/store/processes/add', newProcess).then(function () {
+            console.log(newProcess);
+            _share_api__WEBPACK_IMPORTED_MODULE_4__["Api"].postApi(_share_module_management__WEBPACK_IMPORTED_MODULE_2__["ModuleManagement"].storeIP + '/store/processes/add/', newProcess).then(function () {
                 _this.saveFailed = false;
                 _this.saveCompleted = true;
             });

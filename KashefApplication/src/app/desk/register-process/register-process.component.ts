@@ -31,7 +31,8 @@ export class RegisterProcessComponent {
       newProcess.name = this.processName.trim();
       newProcess.description = this.processDescription;
       newProcess.json_file = JSON.stringify(json_file);
-      Api.postApi('http://127.0.0.1:5000/api/store/processes/add', newProcess).then(
+      console.log(newProcess);
+      Api.postApi(ModuleManagement.storeIP + '/store/processes/add/', newProcess).then(
         () => {
           this.saveFailed = false;
           this.saveCompleted = true;

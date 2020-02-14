@@ -1,4 +1,6 @@
 from flask import Flask, Blueprint, render_template, request, redirect
+from sqlalchemy.sql.functions import current_user
+
 from db_manager.models import db, Module, \
     User, Role, UserRoles, Output, \
     Input, InputParameter, DataType, \
@@ -255,14 +257,16 @@ def module_info_page(module_id):
     module = Module.query.filter_by(id=module_id).first()
     dm = DbManager()
     is_admin_or_module_owner = False
-    if module.user_id == current_user.id or dm.get_user_role(current_user.id) == "Admin":
-        is_admin_or_module_owner = True
-
-    user_module = UserModules.query.filter_by(user_id=current_user.id, module_id=module_id).first()
-
     bought_module = False
-    if user_module is not None:
-        bought_module = True
+
+    if current_user.is_authenticated:
+        if module.user_id == current_user.id or dm.get_user_role(current_user.id) == "Admin":
+            is_admin_or_module_owner = True
+
+        user_module = UserModules.query.filter_by(user_id=current_user.id, module_id=module_id).first()
+
+        if user_module is not None:
+            bought_module = True
 
     # {'in1':integer, 'in2':String,}
     inputs = {}
@@ -667,8 +671,6 @@ def current_user_module():
         module.inputs = inputs_array
         module.outputs = outputs_array
 
-    print(json.dumps(serializer.module_serializer(final_modules_to_send)))
-
     return json.dumps(serializer.module_serializer(final_modules_to_send))
 
 ############################################################################################
@@ -715,6 +717,38 @@ def user_processes():
 
     return json.dumps(serializer.process_serializer(final_processes_to_send))
 
+
+############################################################################################
+@app.route('/store/processes/add/', methods=['POST'])
+@roles_required('ModuleDeveloper')
+def add_new_process():
+
+    name = request.json['name']
+    description = request.json['description']
+    json_file = request.json['json_file']
+    process = Process(
+        user_id=current_user.id,
+        name=name,
+        description=description,
+        json_file=json_file,
+        is_approved=0,
+        is_deleted=0
+    )
+    db.session.add(process)
+
+    user_process = UserProcess(
+        user_id=current_user.id,
+        process_id=process.id
+    )
+    db.session.add(user_process)
+
+    db.session.commit()
+
+    result = {
+        'result': 'new process added'
+    }
+    return json.dumps(result)
+
 ############################################################################################
 @app.after_request
 def after_request(response):
@@ -724,7 +758,6 @@ def after_request(response):
     return response
 ############################################################################################
 # Start development web server
-
 
 if __name__ == '__main__':
 

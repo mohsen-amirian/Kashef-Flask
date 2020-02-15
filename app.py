@@ -692,7 +692,9 @@ def get_module_item(id):
 
 ############################################################################################
 @app.route('/store/processes/user-processes', methods=['GET'])
+@roles_required('ModuleDeveloper')
 def user_processes():
+    print(current_user.id)
     not_approved_processes = Process.query.filter((Process.is_approved == 0) | (Process.is_deleted == 1)).all()
     not_approved_process_ids = []
     for process_item in not_approved_processes:

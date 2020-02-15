@@ -2105,11 +2105,11 @@ var ToolboxComponent = /** @class */ (function () {
                 var newModule = new _share_module_model__WEBPACK_IMPORTED_MODULE_2__["Module"]();
                 newModule.id = module.id;
                 newModule.name = module.name;
-                newModule.codeName = module.code_name;
-                newModule.webServiceUrl = module.web_service_url;
-                newModule.webServiceType = module.web_service_type;
-                newModule.imageAddress = module.image_address;
-                newModule.iconAddress = module.icon_address;
+                newModule.codeName = module.codeName;
+                newModule.webServiceUrl = module.webServiceUrl;
+                newModule.webServiceType = module.webServiceType;
+                newModule.imageAddress = module.imageAddress;
+                newModule.iconAddress = module.iconAddress;
                 newModule.isSelected = false;
                 newModule.category_id = module.category_id;
                 for (var _a = 0, _b = module.inputs; _a < _b.length; _a++) {
